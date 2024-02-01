@@ -14,7 +14,7 @@
     "@nuxt/devtools": "latest",
     "@vueuse/core": "^10.6.1",
     "@vueuse/nuxt": "^10.6.1",
-    "nuxt": "^3.8.1",
+    "nuxt": "^3.10.0",
     "type-fest": "^4.7.1",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5"
