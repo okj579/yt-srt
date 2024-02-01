@@ -16,7 +16,7 @@ jobs:
       - run: pnpm install
       - run: pnpm build --preset github_pages
         env:
-          NUXT_APP_BASE_URL: ${{ steps.deployment.outputs.page_url }}
+          NUXT_APP_BASE_URL: /yt-srt/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
