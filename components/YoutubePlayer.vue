@@ -13,6 +13,9 @@ const emit = defineEmits<{
 const containerEl = ref<HTMLElement>();
 const player = ref<YT.Player>();
 
+const emitProgress = () => emit("progress", player.value!.getCurrentTime());
+const { pause, resume } = useIntervalFn(emitProgress, 100, { immediate: false });
+  
 onMounted(async () => {
   const YT = await useYoutubeIframeApi();
 
@@ -25,40 +28,24 @@ onMounted(async () => {
     (event: YT.OnStateChangeEvent) => {
       switch (event.data) {
         case YT.PlayerState.PLAYING:
-          onPlay();
+          emit("play");
+          emitProgress();
+          resume();
           break;
         case YT.PlayerState.PAUSED:
         case YT.PlayerState.BUFFERING:
-          onPause();
+          emitProgress();
+          emit("pause");
+          pause();
           break;
         default:
-          onStop();
+          emitProgress();
+          emit("stop");
+          pause();
       }
     }
   );
 });
-
-const { pause, resume } = useIntervalFn(
-  () => emit("progress", player.value!.getCurrentTime()),
-  100,
-  { immediate: false }
-);
-
-function onPlay() {
-  emit("play");
-  emit("progress", player.value!.getCurrentTime());
-  resume();
-}
-function onPause() {
-  emit("pause");
-  emit("progress", player.value!.getCurrentTime());
-  pause();
-}
-function onStop() {
-  emit("progress", player.value!.getCurrentTime());
-  emit("stop");
-  pause();
-}
 </script>
 
 <template>
